@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>学生信息</h1>
+    <table border="1" cellspacing="0">
+        <thead>
+            <tr>
+                <th>学号</th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>班级</th>
+            </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+</body>
+<script src="js/jQuery%20JavaScript%20Library%20v3.4.1.js"></script>
+<script>
+
+    var studentArr;
+    $(function () {
+        ajaxFn()
+    })
+
+
+    function ajaxFn() {
+        //创建对象
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            xmlhttp=new XMLHttpRequest();
+        }
+        else {
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        //设置请求
+        xmlhttp.open("get","/studentManage.do",true);
+
+        //接收响应回来的数据
+        xmlhttp.onreadystatechange=function() {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                var jsonVal =xmlhttp.responseText;
+                studentArr = JSON.parse(jsonVal);
+                displayData();
+            }
+        }
+
+        //发起请求
+        xmlhttp.send();
+
+    }
+
+    function displayData() {
+        $("#tbody").html("")
+        for (var i=0;i<studentArr.length;i++){
+            $("#tbody").append(`<tr>
+                                    <td>${studentArr[i].s_id}</td>
+                                    <td>${studentArr[i].s_name}</td>
+                                    <td>${studentArr[i].s_sex}</td>
+                                    <td>${studentArr[i].s_age}</td>
+                                    <td>${studentArr[i].s_class_id}</td>
+                                </tr>`)
+
+
+        }
+    }
+</script>
+</html>
